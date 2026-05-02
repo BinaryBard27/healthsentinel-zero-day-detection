@@ -1,0 +1,115 @@
+================================================================================
+COMPREHENSIVE LOG FILE MERGER
+================================================================================
+
+Source: C:\Users\SHERWIN\OneDrive\Documents\Desktop\project\HealthSentinel\Datasets\preprocessed data\sql injection and log\log files
+Output: C:\Users\SHERWIN\OneDrive\Documents\Desktop\project\HealthSentinel\Datasets\merged_all_logs_complete.csv
+
+================================================================================
+
+Found 29 CSV files total
+
+Data files (excluding templates): 16
+
+--------------------------------------------------------------------------------
+[1/16] Android_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+[2/16] Apache_2k.log_structured_cleaned.csv
+     Size: 0.2 MB
+     Loaded: 2,000 rows
+
+[3/16] BGL_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+[4/16] Friday-WorkingHours-Afternoon-DDos.pcap_ISCX_reduced.csv
+     Size: 76.9 MB
+     Reading in chunks (large file)...
+     Loaded: 225,745 rows
+
+[5/16] Friday-WorkingHours-Morning.pcap_ISCX_cleaned.csv
+     Size: 62.5 MB
+     Reading in chunks (large file)...
+     Loaded: 191,031 rows
+
+[6/16] HDFS_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+[7/16] HealthApp_2k.log_structured_cleaned.csv
+     Size: 0.3 MB
+     Loaded: 2,000 rows
+
+[8/16] Mac_2k.log_structured_cleaned.csv
+     Size: 0.5 MB
+     Loaded: 2,000 rows
+
+[9/16] Monday-WorkingHours.pcap_ISCX_cleaned_20250910_011850.csv
+     Size: 237.4 MB
+     Reading in chunks (large file)...
+     Loaded: 529,858 rows
+
+[10/16] OpenSSH_2k.log_structured_cleaned.csv
+     Size: 0.3 MB
+     Loaded: 2,000 rows
+
+[11/16] OpenStack_2k.log_structured_cleaned.csv
+     Size: 0.7 MB
+     Loaded: 2,000 rows
+
+[12/16] Spark_2k.log_structured_cleaned.csv
+     Size: 0.3 MB
+     Loaded: 2,000 rows
+
+[13/16] Thunderbird_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+[14/16] Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX_cleaned.csv
+     Size: 60.8 MB
+     Reading in chunks (large file)...
+     Loaded: 170,365 rows
+
+[15/16] Windows_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+[16/16] Zookeeper_2k.log_structured_cleaned.csv
+     Size: 0.4 MB
+     Loaded: 2,000 rows
+
+================================================================================
+Merging all dataframes...
+Saving to C:\Users\SHERWIN\OneDrive\Documents\Desktop\project\HealthSentinel\Datasets\merged_all_logs_complete.csv...
+Traceback (most recent call last):
+  File "C:\Users\SHERWIN\OneDrive\Documents\Desktop\project\HealthSentinel\osquery\aggregator\merge_all_complete.py", line 72, in <module>
+    result.to_csv(output, index=False)
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\generic.py", line 3902, in to_csv
+    return DataFrameRenderer(formatter).to_csv(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\formats\format.py", line 1152, in to_csv
+    csv_formatter.save()
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\formats\csvs.py", line 266, in save
+    self._save()
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\formats\csvs.py", line 271, in _save
+    self._save_body()
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\formats\csvs.py", line 309, in _save_body
+    self._save_chunk(start_i, end_i)
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\formats\csvs.py", line 316, in _save_chunk
+    res = df._mgr.to_native_types(**self._number_format)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\internals\managers.py", line 438, in to_native_types
+    return self.apply("to_native_types", **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\internals\managers.py", line 354, in apply
+    applied = getattr(b, f)(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\internals\blocks.py", line 636, in to_native_types
+    result = to_native_types(self.values, na_rep=na_rep, quoting=quoting, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SHERWIN\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\internals\blocks.py", line 2540, in to_native_types
+    values = values.astype(str)
+             ^^^^^^^^^^^^^^^^^^
+numpy.core._exceptions._ArrayMemoryError: Unable to allocate 1.49 MiB for an array with shape (26, 471) and data type <U32

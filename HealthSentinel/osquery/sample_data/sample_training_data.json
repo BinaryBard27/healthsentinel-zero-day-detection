@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "description": "Sample synthetic training data for LSTM insider threat model",
+    "total_sequences": 10,
+    "normal_count": 7,
+    "suspicious_count": 3,
+    "sequence_length": 10,
+    "note": "This is a SAMPLE file. Full dataset will be generated on Google Colab."
+  },
+  "sequences": [
+    {
+      "user": "dr_101",
+      "label": 0,
+      "label_name": "normal",
+      "events": [
+        {"name": "user_login_events", "host": "ws-401", "unixTime": 1738381200, "columns": {"username": "dr_101", "time": 1738381200}},
+        {"name": "file_access_events", "host": "ws-401", "unixTime": 1738381320, "columns": {"username": "dr_101", "target_path": "/home/dr_101/notes", "size": 4096}},
+        {"name": "process_events", "host": "ws-401", "unixTime": 1738381440, "columns": {"username": "dr_101", "path": "/usr/bin/office"}}
+      ]
+    },
+    {
+      "user": "nurse_202",
+      "label": 0,
+      "label_name": "normal",
+      "events": [
+        {"name": "user_login_events", "host": "ws-402", "unixTime": 1738382100, "columns": {"username": "nurse_202", "time": 1738382100}},
+        {"name": "file_access_events", "host": "ws-402", "unixTime": 1738382220, "columns": {"username": "nurse_202", "target_path": "/var/log/schedule", "size": 2048}}
+      ]
+    },
+    {
+      "user": "admin_303",
+      "label": 1,
+      "label_name": "suspicious",
+      "events": [
+        {"name": "off_hours_activity", "host": "ws-500", "unixTime": 1738404000, "columns": {"username": "admin_303", "time": 1738404000}},
+        {"name": "sensitive_directory_access", "host": "ws-500", "unixTime": 1738404120, "columns": {"username": "admin_303", "target_path": "/data/patients/records", "size": 50000000}},
+        {"name": "external_network_connections", "host": "ws-500", "unixTime": 1738404240, "columns": {"username": "admin_303", "remote_address": "185.123.45.67", "remote_port": 4444}},
+        {"name": "usb_devices", "host": "ws-500", "unixTime": 1738404360, "columns": {"username": "admin_303", "removable": "1", "model": "USB_STORAGE"}}
+      ]
+    },
+    {
+      "user": "tech_404",
+      "label": 0,
+      "label_name": "normal",
+      "events": [
+        {"name": "user_login_events", "host": "ws-403", "unixTime": 1738385400, "columns": {"username": "tech_404"}},
+        {"name": "network_connections", "host": "ws-403", "unixTime": 1738385520, "columns": {"username": "tech_404", "remote_address": "192.168.1.100", "remote_port": 443}}
+      ]
+    },
+    {
+      "user": "billing_505",
+      "label": 1,
+      "label_name": "suspicious",
+      "events": [
+        {"name": "large_file_operations", "host": "ws-510", "unixTime": 1738390800, "columns": {"username": "billing_505", "target_path": "/data/billing/claims", "size": 250000000, "action": "copy"}},
+        {"name": "external_network_connections", "host": "ws-510", "unixTime": 1738390920, "columns": {"username": "billing_505", "remote_address": "89.45.23.100", "remote_port": 21}}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  honey_web:
+    build: ./web
+    ports:
+      - "5000:5000"
+    environment:
+      - AGGREGATOR_URL=http://host.docker.internal:8080/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  honey_sql:
+    build: ./sql
+    ports:
+      - "5432:5432"
+    environment:
+      - AGGREGATOR_URL=http://host.docker.internal:8080/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

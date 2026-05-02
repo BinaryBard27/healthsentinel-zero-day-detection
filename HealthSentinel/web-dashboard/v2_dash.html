@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSentinel | AI Security Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .alert-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-400">🛡️ HealthSentinel</h1>
+                <p class="text-slate-400 text-sm">AI-Driven Healthcare Security Platform</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="glass p-3 rounded-xl text-center min-w-[120px]">
+                    <span class="block text-xs text-slate-400 uppercase">System Status</span>
+                    <span class="text-green-400 font-semibold">PROTECTED</span>
+                </div>
+                <div class="glass p-3 rounded-xl text-center min-w-[120px]">
+                    <span class="block text-xs text-slate-400 uppercase">Risk Level</span>
+                    <span class="text-blue-400 font-semibold" id="global-risk">LOW</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Left Panel: Stats & Mini Charts -->
+            <div class="space-y-6">
+                <div class="glass p-6 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Telemetry Overview</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-800/50 p-4 rounded-xl">
+                            <span class="text-sm text-slate-400">Total Logs</span>
+                            <div class="text-2xl font-bold" id="total-logs">0</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-4 rounded-xl">
+                            <span class="text-sm text-slate-400">AI Alerts</span>
+                            <div class="text-2xl font-bold text-red-400" id="total-alerts">0</div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <canvas id="telemetryChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass p-6 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Compliance & Data</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-slate-400">HIPAA Status</span>
+                            <span class="text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded" id="compliance-status">SCANNING...</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-slate-400">PHI Redaction</span>
+                            <span class="text-xs font-bold text-blue-400" id="phi-rate">0%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-slate-400">Blockchain Audit</span>
+                            <span class="text-xs font-bold text-purple-400">VERIFIED</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass p-6 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">🕵️ AI Threat Hunter</h2>
+                    <div id="chat-box" class="h-48 overflow-y-auto mb-4 bg-slate-900/50 p-3 rounded-lg border border-slate-700 custom-scrollbar">
+                        <div class="text-slate-500 text-xs italic">Ask about threats...</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="hunt-input" placeholder="Query threat context..." class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm flex-grow focus:outline-none focus:border-blue-500">
+                        <button onclick="sendHunt()" class="bg-blue-600 hover:bg-blue-500 p-2 rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Panel: Real-time Alerts -->
+            <div class="md:col-span-2 space-y-6">
+                <div class="glass p-6 rounded-2xl min-h-[500px] flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold">🚨 Live Threat Intelligence</h2>
+                        <span class="bg-red-500/20 text-red-400 text-xs font-bold px-2 py-1 rounded border border-red-500/50">REAL-TIME</span>
+                    </div>
+                    
+                    <div id="alert-feed" class="flex-grow space-y-4 overflow-y-auto max-h-[600px] pr-2">
+                        <!-- Alerts will slide in here -->
+                         <div class="bg-slate-800/30 border border-slate-700 p-8 rounded-2xl text-center text-slate-500">
+                             Monitoring all zones: EHR, IoMT, Cloud, and Endpoints...
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8000";
+        const WS_URL = "ws://localhost:8000/ws/alerts";
+        
+        let telemetryChart;
+
+        async function updateStats() {
+            try {
+                const res = await fetch(`${API_BASE}/api/ai/health`);
+                const data = await res.json();
+                
+                // document.getElementById('total-logs').innerText = data.total_logs || 1520;
+                // document.getElementById('total-alerts').innerText = data.total_alerts || 12;
+            } catch(e) { console.error("Stats update failed", e); }
+        }
+
+        async function updateCompliance() {
+            try {
+                const res = await fetch(`${API_BASE}/api/ai/compliance`);
+                const data = await res.json();
+                document.getElementById('compliance-status').innerText = data.overall_health;
+                document.getElementById('phi-rate').innerText = data.metrics.phi_redaction_rate;
+            } catch(e) { }
+        }
+
+        function createAlertElement(alert) {
+            const div = document.createElement('div');
+            const severityColor = alert.severity === 'critical' ? 'red' : (alert.severity === 'high' ? 'orange' : 'blue');
+            div.className = `bg-slate-800/80 border-l-4 border-${severityColor}-500 p-4 rounded-r-xl transition-all duration-500 translate-x-4 opacity-0`;
+            div.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-${severityColor}-400 text-xs font-bold uppercase tracking-wider">${alert.severity} • ${alert.alert_type}</span>
+                        <h3 class="font-semibold text-slate-200">${alert.description}</h3>
+                        <p class="text-xs text-slate-500 mt-1">Host: ${alert.host} • User: ${alert.user_id || 'System'}</p>
+                    </div>
+                    <span class="text-[10px] text-slate-600">${new Date(alert.timestamp).toLocaleTimeString()}</span>
+                </div>
+            `;
+            return div;
+        }
+
+        function connectWS() {
+            const socket = new WebSocket(WS_URL);
+            
+            socket.onmessage = function(event) {
+                const alert = JSON.parse(event.data);
+                const feed = document.getElementById('alert-feed');
+                
+                if(feed.querySelector('.text-slate-500')) feed.innerHTML = '';
+                
+                const alertEl = createAlertElement(alert);
+                feed.prepend(alertEl);
+                
+                setTimeout(() => {
+                    alertEl.classList.remove('translate-x-4', 'opacity-0');
+                }, 10);
+                
+                // Update counter
+                const counter = document.getElementById('total-alerts');
+                counter.innerText = parseInt(counter.innerText) + 1;
+            };
+
+            socket.onclose = () => {
+                console.log("WebSocket closed, retrying in 5s...");
+                setTimeout(connectWS, 5000);
+            };
+        }
+
+        async function sendHunt() {
+            const query = document.getElementById('hunt-input').value;
+            if(!query) return;
+            
+            const chat = document.getElementById('chat-box');
+            chat.innerHTML += `<div class="text-blue-400 text-sm mt-2"><b>You:</b> ${query}</div>`;
+            document.getElementById('hunt-input').value = '';
+
+            try {
+                const res = await fetch(`${API_BASE}/api/ai/hunt`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({query})
+                });
+                const data = await res.json();
+                chat.innerHTML += `<div class="text-slate-300 text-sm mt-1"><b>Hunter:</b> ${data.answer}</div>`;
+                if(data.remediation.length > 0) {
+                    chat.innerHTML += `<div class="text-green-400 text-xs mt-1"><b>Recs:</b> ${data.remediation.join(', ')}</div>`;
+                }
+                chat.scrollTop = chat.scrollHeight;
+            } catch(e) { }
+        }
+
+        // Initial setup
+        connectWS();
+        updateCompliance();
+        setInterval(updateCompliance, 15000);
+    </script>
+</body>
+</html>
